@@ -1,0 +1,21 @@
+extends layout
+
+block layout-content
+  div.View.WelcomeView
+    h1.Banner WHATABYTE
+    div.Message
+      div.Title
+        h3 Making the Best
+        h1 Food For Devs
+      span.Details Access the WHATABYTE Team Portal
+    div.container 
+      div.row
+        div.col 
+          a.btn.btn-primary(href="/menu", role="button") Menu
+    div.NavButtons
+      if isAuthenticated
+        a.btn.btn-primary(href="/user", role="button") Just dive in
+          //-div.NavButton Just dive in!
+      else
+        a.btn.btn-primary(href="/login" role="button") Log in
+          //-div.NavButton Log in
