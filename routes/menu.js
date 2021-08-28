@@ -11,7 +11,7 @@ router.get('/menu', function(req, res, next) {
       return;
     }
       
-    res.render('menu', {results},  {title:"Menù"});
+    res.render('menu', {results: results, title:"Menù"});
     
   });
 });
