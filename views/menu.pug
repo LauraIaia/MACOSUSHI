@@ -1,7 +1,21 @@
 extends layout
 
 block layout-content
-    ul
-    each row in results 
-      li
-        hi #{row.nome_piatto} - #{row.descrizione_piatto}
+  button.btn.btn-danger(type='button') Carrello
+    span.badge.badge-light 0
+  div.container
+  each st in sottogruppi
+    h1 #{st}
+    - var row_items = 0
+    each dish in results.get(st)
+      - if(row_items % 4 == 0)
+        div.row
+
+      - row_items++
+          .col
+            div.card(style="width: 18rem;")
+              img.card-img-top(src="/images/" + dish.foto  alt="Card image cap")
+              div.card-body
+                h5.card-title #{dish.nome}
+                p.card-text #{dish.descrizione}
+                a.btn.btn-primary(onclick= "orderDishes(" + dish.id + ")") Aggiungi al carrello

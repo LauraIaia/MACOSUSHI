@@ -38,7 +38,9 @@ class Db{
     }
 
     getDishes(callback){
-        this.connection.query("select idPiatti, nome_piatto, descrizione_piatto from piatti", callback);
+        this.connection.query("select p.id, p.nome, descrizione, foto, s.nome sottogruppo from piatti p " +
+        "join sottogruppi s on idSOTTOGRUPPI = s.id " +
+        "order by s.nome;", callback);
     }
 }
 
