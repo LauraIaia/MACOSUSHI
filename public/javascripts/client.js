@@ -7,3 +7,7 @@ function orderDishes(data){
         dataType: "json"
     });
 }
+
+function addToCart(){
+    $('')
+}
