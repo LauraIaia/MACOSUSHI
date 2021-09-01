@@ -1,21 +1,25 @@
 extends layout
 
 block layout-content
-  button.carrello.btn.btn-danger(type='button') Carrello
-    span.badge.badge-light 0
+  a.cart.btn.btn-danger(href="/cart" role='button') Carrello
+    span.badge.bg-light(style="margin-left: 5px; color: black;") #{orders}
   div.container
   each st in sottogruppi
     h1 #{st}
     - var row_items = 0
     each dish in results.get(st)
-      - if(row_items % 4 == 0)
-        div.row
+      - if(row_items % 4 == 0){
+        - if(row_items != 0)
+          </div>
+        <div class="row">
+      - }
 
-      - row_items++
           .col
             div.card(style="width: 18rem;")
-              img.card-img-top(src="/images/" + dish.foto  alt="Card image cap")
+              img.card-img-top(src="/images/286x286/" + dish.foto  alt="Card image cap")
               div.card-body
                 h5.card-title #{dish.nome}
                 p.card-text #{dish.descrizione}
-                a.btn.btn-primary(onclick= "orderDishes(" + dish.id + ")") Aggiungi al carrello
+                a.btn.btn-primary(onclick= "addDish(" + dish.id + ", addedToCart())") Aggiungi al carrello
+      - row_items++
+    </div>                

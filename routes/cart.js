@@ -7,7 +7,9 @@ router.get('/cart', function(req, res, next) {
   const db = new DB();
   var orders = [];
   //req.session.cart.forEach((key, value) =>{
-  for (const [key, value] of Object.entries(req.session.cart)) {  
+  const cart = Object.entries(req.session.cart);
+  var i = 0;
+  for (const [key, value] of cart) {  
       db.getDish(key, (error, results, fields) => {
         if(error) {
           next(error);
@@ -19,10 +21,16 @@ router.get('/cart', function(req, res, next) {
           nome: results[0].nome,
           qty: value 
         });
+      
+        if (i == cart.length - 1)
+          res.render('cart', { title: 'Cart', orders});
       });
+
+    i++;
+  
   }
 
-  res.render('cart', { title: 'Cart', orders});
+  
 });
 
 router.post('/cart/submit', function(req, res, next) {

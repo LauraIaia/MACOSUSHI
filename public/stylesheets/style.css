@@ -8,7 +8,7 @@ a {
 }
 
 html { 
-  background: url(/images/welcome.jpg) no-repeat center center fixed; 
+  background: url(/images/backgroud_site.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -17,4 +17,5 @@ html {
 
 button.register {float: right; margin: 5px;}
 button.signin {float:right; margin: 5px}
-button.carrello {float:right; margin: 5px}
+a.cart {float:right; margin: 5px}
+a.logout {float: right; margin:5px;}
