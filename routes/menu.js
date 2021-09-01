@@ -25,27 +25,31 @@ router.get('/menu', function(req, res, next) {
      }
      sottogruppo = st;
     };
-    var o ={sottogruppi: Array.from(dishes.keys()), results: dishes, title:"Menù"};
+    
+    var orders = 0;
+    if(req.session.cart){
+      req.session.cart.forEach((value) => {orders += value;});
+    }
+
+    var o ={sottogruppi: Array.from(dishes.keys()), results: dishes, title:"Menù", orders};
     res.render('menu', o);
 
   });
 
-  router.post('/menu', function(req, res, next) {
-    const carrello = req.session.carrello;
+  router.post('/menu/addDish', function(req, res, next) {
     const id = req.body.idPiatto;
 
-    if(!carrello){
-      carrello = new Map();
-      req.session.carrello = carrello;
-    }
+    if(!req.session.cart)
+      req.session.cart = {};
+      //req.session.cart = new Map();
     
-    if(carrello.has(id))
-      carrello[id]++;
+    
+    if(req.session.cart[id])
+      req.session.cart[id]++;
     else
-      carrello.set(id, 1);
+      req.session.cart[id] = 1;
 
-
-    console.log(req);
+    res.status(200).send();
   });
 });
 

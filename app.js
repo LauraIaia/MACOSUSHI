@@ -12,10 +12,12 @@ require("dotenv").config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var cartRouter = require('./routes/cart');
 var menuRouter = require('./routes/menu');
 var signinRouter = require('./routes/signin');
 var registerRouter = require('./routes/register');
 var authRouter = require('./routes/auth');
+const { MemoryStore } = require('express-session');
 
 var app = express();
 
@@ -27,7 +29,9 @@ var app = express();
   secret: process.env.SESSION_SECRET,
   cookie: {},
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: new MemoryStore(),
+  maxAge: Date.now() + (60*60*1000) // scade dopo un'ora
 };
 
 if (app.get("env") === "production") {
@@ -104,6 +108,7 @@ const secured = (req, res, next) => {
 //app.use('/', usersRouter);
 app.use('/', authRouter);
 app.use('/', menuRouter);
+app.use('/', cartRouter);
 app.use('/', registerRouter);
 app.use('/', signinRouter);
 

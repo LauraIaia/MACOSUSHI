@@ -1,3 +1,37 @@
 extends layout
 
 block layout-content
+    h1 Carrello
+    .container 
+    each order in orders
+        .row(id="order" + order.id) 
+            .col  order.name
+            .col.qty  order.qty
+            .col 
+                button.btn.btn-primry(onclick="addDish(" + order.id + ", orderAdded(" + order.id + "))", type="button") +
+                button.btn.btn-primry(onclick="delDish(" + order.id + ", orderRemoved(" + order.id + "))", type="button") -
+    .row 
+        .col 
+            .input-group.input-group-lg
+                span.input-group-text Tavolo
+                input.form-control#tavolo(type='text' aria-label='Tavolo' aria-describedby='inputGroup-sizing-lg')
+    .row 
+        .col 
+            button.btn.btn-primary(type='button' onclick="submitOrder()")
+
+    // Modal
+    #orderSubmitted.modal.fade(tabindex='-1' aria-labelledby='orderSubmittedLabel' aria-hidden='true')
+    .modal-dialog
+        .modal-content
+        .modal-header
+            h5#orderSubmittedLabel.modal-title Ordine Completato
+            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+        .modal-body
+            p Congratulazioni, il vostro ordine è stato inviato, verrete serviti a breve.
+        .modal-footer
+            button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+ 
+    script.
+        $(document).on('hidden.bs.modal','#orderSubmitted', function () {
+            window.location = "/menu"
+        });

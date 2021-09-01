@@ -5,8 +5,8 @@ class Db{
         this.connection = mysql.createConnection({
             host     : 'localhost',            
             user: 'root',
-            password: 'laura00@',
-            
+            //password: 'laura00@',
+            password: 'sup3rP@$$w0rd',
             database : 'macosushi'
         });
     }   
@@ -39,8 +39,17 @@ class Db{
 
     getDishes(callback){
         this.connection.query("select p.id, p.nome, descrizione, foto, s.nome sottogruppo from piatti p " +
-        "join sottogruppi s on idSOTTOGRUPPI = s.id " +
+        "join sottogruppi s on idSOTTOGRUPPO = s.id " +
         "order by s.nome;", callback);
+    }
+
+    getDish(id, callback){
+        this.connection.query("select * from piatti where id = ?", [id], callback);
+    }
+
+    addOrder(order, callback){
+        this.connection.query("insert into ordini(tavolo, idPiatto, qty, idUtente) values ?",
+            order, callback);
     }
 }
 
