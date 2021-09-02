@@ -44,10 +44,8 @@ class Db{
     }
 
     getOrders(idUtente, callback){
-        this.connection.query("select p.nome, p.descrizione, p.foto, o.dt, o.voto " + 
-            "from ordini o " +
-            "join piatti p on idPiatto = p.id " + 
-            "where idUtente = ? " + 
+        this.connection.query("select p.nome, p.descrizione, p.foto, o.dt, o.voto " +  "from ordini o " +
+            "join piatti p on idPiatto = p.id " + "where idUtente = ? " + 
             "order by o.dt desc;", [idUtente], callback);
     }
 

@@ -17,6 +17,7 @@ var menuRouter = require('./routes/menu');
 var signinRouter = require('./routes/signin');
 var registerRouter = require('./routes/register');
 var authRouter = require('./routes/auth');
+var storicoRouter = require('./routes/storico');
 const { MemoryStore } = require('express-session');
 
 var app = express();
@@ -111,6 +112,7 @@ app.use('/', menuRouter);
 app.use('/', cartRouter);
 app.use('/', registerRouter);
 app.use('/', signinRouter);
+app.use('/', storicoRouter);
 
 app.get ('/', (req, res) => {
   res.render ('welcomepage');
