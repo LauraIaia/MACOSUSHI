@@ -28,7 +28,11 @@ router.get('/menu', function(req, res, next) {
     
     var orders = 0;
     if(req.session.cart){
-      req.session.cart.forEach((value) => {orders += value;});
+      const cart = Object.entries(req.session.cart);
+      for(const[idPiatto, qty] of cart){
+        orders += qty;
+      }      
+      //req.session.cart.forEach((value) => {orders += value;});
     }
 
     var o ={sottogruppi: Array.from(dishes.keys()), results: dishes, title:"Menù", orders};

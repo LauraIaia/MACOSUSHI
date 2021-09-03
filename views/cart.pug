@@ -5,8 +5,8 @@ block layout-content
     .container 
     each order in orders
         .row(id="order" + order.id) 
-            .col  order.name
-            .col.qty  order.qty
+            .col  #{order.nome}
+            .col.qty  #{order.qty}
             .col 
                 button.btn.btn-primry(onclick="addDish(" + order.id + ", orderAdded(" + order.id + "))", type="button") +
                 button.btn.btn-primry(onclick="delDish(" + order.id + ", orderRemoved(" + order.id + "))", type="button") -
@@ -17,7 +17,7 @@ block layout-content
                 input.form-control#tavolo(type='text' aria-label='Tavolo' aria-describedby='inputGroup-sizing-lg')
     .row 
         .col 
-            button.btn.btn-primary(type='button' onclick="submitOrder()")
+            button.btn.btn-primary(type='button' onclick="submitOrder()") Ordina
 
     // Modal
     #orderSubmitted.modal.fade(tabindex='-1' aria-labelledby='orderSubmittedLabel' aria-hidden='true')

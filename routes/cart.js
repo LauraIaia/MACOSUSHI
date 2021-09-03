@@ -4,11 +4,11 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/cart', function(req, res, next) {
-  const db = new DB();
   var orders = [];
   //req.session.cart.forEach((key, value) =>{
   const cart = Object.entries(req.session.cart);
   var i = 0;
+  const db = new DB();
   for (const [key, value] of cart) {  
       db.getDish(key, (error, results, fields) => {
         if(error) {
@@ -24,10 +24,9 @@ router.get('/cart', function(req, res, next) {
       
         if (i == cart.length - 1)
           res.render('cart', { title: 'Cart', orders});
+        else
+          i++;
       });
-
-    i++;
-  
   }
 
   
@@ -40,25 +39,32 @@ router.post('/cart/submit', function(req, res, next) {
 
   const db = new DB();
   
-  const tavolo = req.body.tavolo
+  const tavolo = parseInt(req.body.tavolo)
   if(!tavolo){
     // errore
   }
 
   var idUtente = null;
-  if(req.user.userProfile.id)
-    idUtente = req.user.userProfile.id;
+  if(req.user)
+    idUtente = req.user.id;
 
-  var order = []
+  var order = [];
+  const cart = Object.entries(req.session.cart);
+  for(const[idPiatto, qty] of cart){
+    order.push([tavolo, parseInt(idPiatto), qty, idUtente]);
+  }
+  /*
   req.session.cart.forEach((idPiatto, qty) => {
     order.push([tavolo, idPiatto, qty, idUtente]);
   });
+  */
 
   db.addOrder(order, (error, results, fields) => {
     if(error) {
       next(error);
       return;
     }
+    res.status(200).send();
   });    
 });
 

@@ -12,6 +12,7 @@ require("dotenv").config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var welcomeRouter = require('./routes/welcomepage');
 var cartRouter = require('./routes/cart');
 var menuRouter = require('./routes/menu');
 var signinRouter = require('./routes/signin');
@@ -107,6 +108,7 @@ const secured = (req, res, next) => {
 
 //app.use('/', indexRouter);
 //app.use('/', usersRouter);
+app.use('/', welcomeRouter);
 app.use('/', authRouter);
 app.use('/', menuRouter);
 app.use('/', cartRouter);
@@ -114,9 +116,11 @@ app.use('/', registerRouter);
 app.use('/', signinRouter);
 app.use('/', storicoRouter);
 
+/*
 app.get ('/', (req, res) => {
   res.render ('welcomepage');
 });
+*/
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

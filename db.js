@@ -5,9 +5,10 @@ class Db{
         this.connection = mysql.createConnection({
             host     : 'localhost',            
             user: 'root',
-            password: 'laura00@',
-            //password: 'sup3rP@$$w0rd',
-            database : 'macosushi'
+            //password: 'laura00@',
+            password: 'sup3rP@$$w0rd',
+            database : 'macosushi',
+            connectTimeout: 60000
         });
     }   
 
@@ -39,14 +40,16 @@ class Db{
 
     getDishes(callback){
         this.connection.query("select p.id, p.nome, descrizione, foto, s.nome sottogruppo from piatti p " +
-        "join sottogruppi s on idSOTTOGRUPPI = s.id " +
+        "join sottogruppi s on idSOTTOGRUPPo = s.id " +
         "order by s.nome;", callback);
     }
 
     getOrders(idUtente, callback){
-        this.connection.query("select p.nome, p.descrizione, p.foto, o.dt, o.voto " +  "from ordini o " +
-            "join piatti p on idPiatto = p.id " + "where idUtente = ? " + 
-            "order by o.dt desc;", [idUtente], callback);
+        this.connection.query(
+            `select p.nome, p.descrizione, p.foto, o.dt, o.voto from ordini o 
+            join piatti p on idPiatto = p.id 
+            where idUtente = ?  
+            order by o.dt desc`, [idUtente], callback);
     }
 
     getDish(id, callback){
@@ -54,7 +57,8 @@ class Db{
     }
 
     addOrder(order, callback){
-        this.connection.query("insert into ordini(tavolo, idPiatto, qty, idUtente) values ?",
+        this.connection.query("insert into ordini(`tavolo`, `idPiatto`, `qty`, `idUtente`) values (?)",
+        //this.connection.query("insert into ordini(`tavolo`, `idPiatto`, `qty`) values (?)",
             order, callback);
     }
 }

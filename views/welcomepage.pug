@@ -1,13 +1,16 @@
 extends layout_welcomepage
 
 block layout-content
-  - if(profilo){
+  - if(!profilo){
       button.signin.btn.btn-danger(onclick="location.href='./signin'") Accedi
-        i.bi-alarm
+        svg.bi(width="32" height="32" fill="currentColor")
+          use(xlink:href="bootstrap-icons.svg#heart-fill")
       button.register.btn.btn-danger(onclick="location.href='./register'") Registrati
   - }
   button.menu.btn.btn-danger(onclick="location.href='./menu'") Menù
-  - if(!profilo){
+  - if(profilo){
       a.storico.btn.btn-danger(href="/storico") Storico
       a.logout.btn.btn-danger(href="/logout") Log Out
+        svg.bi(width="32" height="32")
+          use(xlink:href="bootstrap-icons.svg#heart-fill")
   - }
