@@ -15,8 +15,6 @@ var usersRouter = require('./routes/users');
 var welcomeRouter = require('./routes/welcomepage');
 var cartRouter = require('./routes/cart');
 var menuRouter = require('./routes/menu');
-var signinRouter = require('./routes/signin');
-var registerRouter = require('./routes/register');
 var authRouter = require('./routes/auth');
 var storicoRouter = require('./routes/storico');
 const { MemoryStore } = require('express-session');
@@ -112,8 +110,6 @@ app.use('/', welcomeRouter);
 app.use('/', authRouter);
 app.use('/', menuRouter);
 app.use('/', cartRouter);
-app.use('/', registerRouter);
-app.use('/', signinRouter);
 app.use('/', storicoRouter);
 
 /*

@@ -18,7 +18,7 @@ router.get('/cart', function(req, res, next) {
 
         orders.push({
           id: results[0].id,
-          nome: results[0].nome,
+          nome: results[0].NOME,
           qty: value 
         });
       
@@ -28,8 +28,6 @@ router.get('/cart', function(req, res, next) {
           i++;
       });
   }
-
-  
 });
 
 router.post('/cart/submit', function(req, res, next) {
@@ -51,13 +49,8 @@ router.post('/cart/submit', function(req, res, next) {
   var order = [];
   const cart = Object.entries(req.session.cart);
   for(const[idPiatto, qty] of cart){
-    order.push([tavolo, parseInt(idPiatto), qty, idUtente]);
+    order.push([tavolo, parseInt(idPiatto), qty, idUtente, req.session.id]);
   }
-  /*
-  req.session.cart.forEach((idPiatto, qty) => {
-    order.push([tavolo, idPiatto, qty, idUtente]);
-  });
-  */
 
   db.addOrder(order, (error, results, fields) => {
     if(error) {

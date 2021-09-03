@@ -1,15 +1,19 @@
 extends layout
 
 block layout-content
-    h1 Carrello
+    h1.white Carrello
     .container 
     each order in orders
         .row(id="order" + order.id) 
-            .col  #{order.nome}
-            .col.qty  #{order.qty}
-            .col 
-                button.btn.btn-primry(onclick="addDish(" + order.id + ", orderAdded(" + order.id + "))", type="button") +
-                button.btn.btn-primry(onclick="delDish(" + order.id + ", orderRemoved(" + order.id + "))", type="button") -
+            .col.white  #{order.nome}
+            .col.qty.white #{order.qty}
+            .col.white 
+                button.btn.btn-primry(onclick="addDish(" + order.id + ", orderAdded(" + order.id + "))", type="button")
+                    svg.bi.text-white(width="32" height="32" fill="currentColor")
+                        use(xlink:href="bootstrap-icons.svg#cart-plus-fill")
+                button.btn.btn-primry(onclick="delDish(" + order.id + ", orderRemoved(" + order.id + "))", type="button")
+                    svg.bi.text-white(width="32" height="32" fill="currentColor")
+                        use(xlink:href="bootstrap-icons.svg#cart-dash-fill")                
     .row 
         .col 
             .input-group.input-group-lg

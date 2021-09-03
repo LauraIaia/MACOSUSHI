@@ -12,3 +12,13 @@ html(lang="en")
     
   body
     block layout-content
+    - if(!profilo){
+      button.signin.btn.btn-danger.position-absolute.top-0.end-0(onclick="location.href='./signin'") Accedi
+        svg.bi(width="32" height="32" fill="currentColor")
+          use(xlink:href="bootstrap-icons.svg#person-fill")
+    - } else{
+      a.storico.btn.btn-danger(href="/storico") Storico
+      a.logout.btn.btn-danger(href="/logout") Log Out
+        svg.bi(width="32" height="32" fill="currentColor")
+          use(xlink:href="bootstrap-icons.svg#heart-fill")
+  - }

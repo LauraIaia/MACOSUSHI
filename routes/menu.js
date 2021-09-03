@@ -35,7 +35,7 @@ router.get('/menu', function(req, res, next) {
       //req.session.cart.forEach((value) => {orders += value;});
     }
 
-    var o ={sottogruppi: Array.from(dishes.keys()), results: dishes, title:"Menù", orders};
+    var o ={sottogruppi: Array.from(dishes.keys()), results: dishes, title:"Menù", orders, profile: req.user!=undefined};
     res.render('menu', o);
 
   });

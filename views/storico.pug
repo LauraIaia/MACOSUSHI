@@ -1,24 +1,24 @@
 extends layout
 
 block layout-content
-    a.cart.btn.btn-danger(href="/cart" role='button') Carrello
-        span.badge.bg-light(style="margin-left: 5px; color: black;") #{orders}
-div.container
+  a.cart.btn.btn-danger(href="/cart" role='button') Carrello
+      span.badge.bg-light(style="margin-left: 5px; color: black;") #{orders}
+  div.container
     - var row_items = 0
-    - var i = 0
-    each results[i] in results.get(voto)
+    - for(var i = 0; i < results.length; i++){
       - if(row_items % 4 == 0){
         - if(row_items != 0)
           </div>
         <div class="row">
       - }
-
           .col
             div.card(style="width: 18rem;")
               img.card-img-top(src="/images/286x286/" +  results[i].foto  alt="Card image cap")
               div.card-body
                 h5.card-title #{results[i].nome}
                 p.card-text #{results[i].descrizione}
+                
                 a.btn.btn-danger(onclick= "addDish(" + results[i].id + ", addedToCart())") Aggiungi al carrello
       - row_items++
+    - }  
     </div>                

@@ -12,3 +12,8 @@ div.main{
   height: 100vh;
 }
 */
+
+/*button.signin {float:right; margin: 5px}*/
+a.cart {float:right; margin: 5px}
+a.logout {float: right; margin:5px;}
+a.storico {float: right; margin: px;}
