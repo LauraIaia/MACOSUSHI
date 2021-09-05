@@ -1,24 +1,87 @@
 extends layout
 
+block navbar-items-left 
+  li.nav-item.dropdown
+    a#sortDropdown.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false') Ordina
+    ul.dropdown-menu(aria-labelledby='sortDropdown')
+        li
+          a.dropdown-item(onclick="sortByBestReview()") Miglior Voto
+        li
+          a.dropdown-item(onclick="sortByWorstReview()") Peggior Voto
+        li
+          a.dropdown-item(onclick="sortByDateDesc()") Ordini più recenti
+        li
+          a.dropdown-item(onclick="sortByDateAsc()") Ordini più vecchi 
+  li.nav-item.dropdown
+    a#filterDropdown.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false') Categorie
+    ul.dropdown-menu(aria-labelledby='filterDropdown')
+      each st in sottogruppi
+        li
+          a.dropdown-item(onclick="filterBy(" + st.id +")") #{st.nome}
+      li
+        a.dropdown-item(onclick="resetFilter()") Tutte
+
+block navbar-items-right
+  li.nav-item.me-2 
+    +menu-button     
+  li.nav-item.me-2
+    +cart-button(orders)
+
 block layout-content
-  a.cart.btn.btn-danger(href="/cart" role='button') Carrello
-      span.badge.bg-light(style="margin-left: 5px; color: black;") #{orders}
-  div.container
-    - var row_items = 0
-    - for(var i = 0; i < results.length; i++){
-      - if(row_items % 4 == 0){
-        - if(row_items != 0)
-          </div>
-        <div class="row">
-      - }
-          .col
-            div.card(style="width: 18rem;")
-              img.card-img-top(src="/images/286x286/" +  results[i].foto  alt="Card image cap")
-              div.card-body
-                h5.card-title #{results[i].nome}
-                p.card-text #{results[i].descrizione}
-                
-                a.btn.btn-danger(onclick= "addDish(" + results[i].id + ", addedToCart())") Aggiungi al carrello
-      - row_items++
-    - }  
-    </div>                
+  div.d-flex.flex-md-row.flex-md-wrap.justify-content-center.cards-deck
+    - for(var i = 0; i < dishes.length; i++){
+      - const voto = dishes[i].voto || 0;
+      - const dt = new Date(dishes[i].dt).toLocaleString();
+      - const epoch = new Date(dishes[i].dt).getTime() / 1000;
+      - const st = dishes[i].st
+      div.card.mx-3.mb-3(style="width: 18rem;" data-voto=voto data-dt=epoch data-sottogruppo=st)
+        img.card-img-top(src="/images/286x286/" +  dishes[i].foto  alt="immagine" + dishes[i].nome)
+        div.card-body
+          h5.card-title #{dishes[i].nome}
+          p.card-text #{dishes[i].descrizione}
+          .list-group-items
+            - for(var j = 0; j < 5; j++){
+                - const diff = voto - j;
+                - if( diff >= 1) {
+                    i.bi.bi-star-fill.yellow-star
+                - } else if(0 < diff && diff < 1) {
+                    i.bi.bi-star-half.yello-star
+                - } else{
+                    i.bi.bi-star-fill.grey-star
+                - }
+            - }
+          p.date #{dt}
+          a.btn.btn-danger(onclick= "addDish(" + dishes[i].id + ", addedToCart())") Aggiungi al carrello
+    - }
+
+block scripts 
+  script. 
+    function sortByBestReview(){
+      sortCards(".cards-deck", function(a, b){
+        return $(a).attr('data-voto') < $(b).attr('data-voto') ? 1 : -1;
+      });
+    }
+    function sortByWorstReview(){
+      sortCards(".cards-deck", function(a, b){
+        return $(a).attr('data-voto') > $(b).attr('data-voto') ? 1 : -1;
+      });
+    }
+    function sortByDateDesc(){
+      sortCards(".cards-deck", function(a, b){
+        return $(a).attr('data-dt') < $(b).attr('data-dt') ? 1 : -1;
+        //return new Date($(a).attr('data-dt')) < new Date($(b).attr('data-dt')) ? 1 : -1;
+      });
+    }
+    function sortByDateAsc(){
+      sortCards(".cards-deck", function(a, b){
+        return $(a).attr('data-dt') > $(b).attr('data-dt') ? 1 : -1;
+        //return new Date($(a).attr('data-dt')) > new Date($(b).attr('data-dt')) ? 1 : -1;
+      });
+    }
+    function filterBy(st){
+      $(".cards-deck .card").removeClass('d-none');
+      $(".cards-deck").find('.card[data-sottogruppo!="'+st+'"]').addClass('d-none');
+    }
+    function resetFilter(){
+      $(".cards-deck .card").removeClass('d-none');
+    }

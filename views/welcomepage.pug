@@ -1,18 +1,21 @@
 extends layout_welcomepage
 
 block layout-content
-  - if(!profilo){
-      button.signin.btn.btn-danger.position-absolute.top-0.end-0(onclick="location.href='./signin'") Accedi
-        svg.bi(width="32" height="32" fill="currentColor")
-          use(xlink:href="bootstrap-icons.svg#person-fill")
-  - }
-
   .d-flex.flex-column.min-vh-100.justify-content-center.align-items-center
-      button.menu.btn.btn-danger(onclick="location.href='./menu'") Menù
+      a.menu.btn.btn-danger.btn-lg.p-3.fs-1(href="/menu") Menù
+          svg.bi.d-block.m-auto(width="64" height="64" fill="currentColor")
+            use(xlink:href="bootstrap-icons.svg#hand-index-thumb")
   
-  - if(profilo){
-      a.storico.btn.btn-danger(href="/storico") Storico
+  .d-flex.flex-row-reverse.position-absolute.top-0.end-0.m-2
+    - if(loggedIn){
       a.logout.btn.btn-danger(href="/logout") Log Out
+        svg.bi.ms-1(width="32" height="32" fill="currentColor")
+          use(xlink:href="bootstrap-icons.svg#box-arrow-right")      
+      a.storico.btn.btn-danger.me-2(href="/storico") Storico
+        svg.bi.ms-1(width="32" height="32" fill="currentColor")
+          use(xlink:href="bootstrap-icons.svg#journal-bookmark-fill")        
+    - } else {
+      a.signin.btn.btn-danger(href="/signin") Accedi
         svg.bi(width="32" height="32" fill="currentColor")
-          use(xlink:href="bootstrap-icons.svg#heart-fill")
-  - }
+          use(xlink:href="bootstrap-icons.svg#box-arrow-in-right")
+    - }  

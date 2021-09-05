@@ -1,41 +1,62 @@
 extends layout
 
-block layout-content
-    h1.white Carrello
-    .container 
-    each order in orders
-        .row(id="order" + order.id) 
-            .col.white  #{order.nome}
-            .col.qty.white #{order.qty}
-            .col.white 
-                button.btn.btn-primry(onclick="addDish(" + order.id + ", orderAdded(" + order.id + "))", type="button")
-                    svg.bi.text-white(width="32" height="32" fill="currentColor")
-                        use(xlink:href="bootstrap-icons.svg#cart-plus-fill")
-                button.btn.btn-primry(onclick="delDish(" + order.id + ", orderRemoved(" + order.id + "))", type="button")
-                    svg.bi.text-white(width="32" height="32" fill="currentColor")
-                        use(xlink:href="bootstrap-icons.svg#cart-dash-fill")                
-    .row 
-        .col 
-            .input-group.input-group-lg
-                span.input-group-text Tavolo
-                input.form-control#tavolo(type='text' aria-label='Tavolo' aria-describedby='inputGroup-sizing-lg')
-    .row 
-        .col 
-            button.btn.btn-primary(type='button' onclick="submitOrder()") Ordina
+block navbar-items-right
+    li.nav-item.me-2 
+        +menu-button                
 
-    // Modal
-    #orderSubmitted.modal.fade(tabindex='-1' aria-labelledby='orderSubmittedLabel' aria-hidden='true')
-    .modal-dialog
-        .modal-content
-        .modal-header
-            h5#orderSubmittedLabel.modal-title Ordine Completato
-            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-        .modal-body
-            p Congratulazioni, il vostro ordine è stato inviato, verrete serviti a breve.
-        .modal-footer
-            button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
- 
+block layout-content
+    .container-sm.bg-light.rounded.mt-4
+        h1 Carrello
+        each order in orders
+            .row.justify-content-center(id="order" + order.id) 
+                .col-4.text-end.align-self-center #{order.nome}
+                .col-1.qty.text-end.align-self-center  #{order.qty}
+                .col-4
+                    a.btn.btn-primry(onclick="addDish(" + order.id + ", dishAdded(" + order.id + "))", role="button")
+                        svg.bi(width="32" height="32" fill="currentColor")
+                            use(xlink:href="bootstrap-icons.svg#cart-plus-fill")
+                    a.btn.btn-primry(onclick="removeDish(" + order.id + ", dishRemoved(" + order.id + "))", role="button")
+                        svg.bi(width="32" height="32" fill="currentColor")
+                            use(xlink:href="bootstrap-icons.svg#cart-dash-fill")                
+        .row.justify-content-center.mt-3
+            .col-4
+                .input-group.input-group-lg
+                    span.input-group-text Tavolo
+                    input.form-control#tavolo(type='text' aria-label='Tavolo' aria-describedby='inputGroup-sizing-lg')
+        .row.justify-content-center 
+            .col-4.text-center
+                button.btn.btn-primary.btn-lg.m-4(type='button' onclick="submitOrder()") Ordina
+
+block modals
+    #orderSubmitted.modal.fade(tabindex='-1' aria-hidden='true')
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h5#orderSubmittedLabel.modal-title Ordine Completato
+                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                .modal-body
+                    p Congratulazioni, il vostro ordine è stato inviato, verrete serviti a breve.
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+
+    #noTableError.modal.fade(tabindex='-1' aria-hidden='true')
+        .modal-dialog
+            .modal-content
+                .modal-header.bg-warning
+                    h5.modal-title Attenzione
+                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                .modal-body
+                    p Non è stato inserito il numero del tavolo
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Chiudi
+
+
+block scripts    
     script.
         $(document).on('hidden.bs.modal','#orderSubmitted', function () {
-            window.location = "/menu"
+            window.location = "/review"
         });
+        setInputFilter(document.getElementById("tavolo"), function(value) {
+            return /^\d*$/.test(value);
+        });
+        

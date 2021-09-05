@@ -13,8 +13,10 @@ require("dotenv").config();
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var welcomeRouter = require('./routes/welcomepage');
+var dishesRouter = require('./routes/dishes');
 var cartRouter = require('./routes/cart');
 var menuRouter = require('./routes/menu');
+var reviewRouter = require('./routes/review');
 var authRouter = require('./routes/auth');
 var storicoRouter = require('./routes/storico');
 const { MemoryStore } = require('express-session');
@@ -31,7 +33,7 @@ var app = express();
   resave: false,
   saveUninitialized: false,
   store: new MemoryStore(),
-  maxAge: Date.now() + (60*60*1000) // scade dopo un'ora
+  maxAge: Date.now() + (60*60*1000) // scade dopo 1 ora
 };
 
 if (app.get("env") === "production") {
@@ -91,7 +93,8 @@ passport.deserializeUser((user, done) => {
 });
 
 app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.isAuthenticated();
+  res.locals.loggedIn = req.isAuthenticated();
+  res.locals.currentPage = req.originalUrl;
   next();
 });
 
@@ -108,12 +111,14 @@ const secured = (req, res, next) => {
 //app.use('/', usersRouter);
 app.use('/', welcomeRouter);
 app.use('/', authRouter);
+app.use('/', dishesRouter);
 app.use('/', menuRouter);
 app.use('/', cartRouter);
 app.use('/', storicoRouter);
+app.use('/', reviewRouter);
 
 /*
-app.get ('/', (req, res) => {
+app.get ('signin', (req, res) => {
   res.render ('welcomepage');
 });
 */

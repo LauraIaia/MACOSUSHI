@@ -1,24 +1,40 @@
+include buttons
 doctype html
 html(lang="en")
   head
     meta(charset="utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
 
-    title= title
+    link(rel="icon" type="image/png" href="/images/sushi.png")
+    title Machosushi
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous")
-    script(src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous")
-    script(src="/javascripts/client.js")
     
   body
-    block layout-content
-    - if(!profilo){
-      button.signin.btn.btn-danger.position-absolute.top-0.end-0(onclick="location.href='./signin'") Accedi
-        svg.bi(width="32" height="32" fill="currentColor")
-          use(xlink:href="bootstrap-icons.svg#person-fill")
-    - } else{
-      a.storico.btn.btn-danger(href="/storico") Storico
-      a.logout.btn.btn-danger(href="/logout") Log Out
-        svg.bi(width="32" height="32" fill="currentColor")
-          use(xlink:href="bootstrap-icons.svg#heart-fill")
-  - }
+    .container-fluid
+      nav.navbar.navbar-expand-lg.navbar-dark.bg-black.sticky-top.rounded-bottom
+        .container-fluid
+          a.navbar-brand(href='#') 
+            img(src="/images/sushi.svg" alt="" width="30" height="24" class="d-inline-block align-text-top")
+            | Macosushi
+          ul.navbar-nav.me-auto.mb-2.mb-lg-0
+            block navbar-items-left
+          ul.navbar-nav.ms-auto.me-2.me-lg-0
+            block navbar-items-right
+            - if(loggedIn){
+              li.nav-item.me-2
+                +review-button
+              li.nav-item.me-2
+                +orders-button
+              li.nav-item.me-2
+                +logout-button
+            - } else{
+              li.nav-item.me-2
+                +login-button(currentPage)            
+            - }
+      block layout-content
+    block modals
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js' integrity='sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj' crossorigin='anonymous')
+    script(src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous")
+    script(src="/javascripts/client.js")
+    block scripts

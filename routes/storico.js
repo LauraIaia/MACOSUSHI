@@ -6,7 +6,7 @@ var router = express.Router();
 router.get('/storico', function(req, res, next) {
   if(!req.user){
     //error
-    res.render('errore_storico', {title: 'errore_storico' });
+    res.render('errors/login_needed', {title: 'errore_storico' });
     return;
   }
   const idUtente = req.user.id;
@@ -16,8 +16,12 @@ router.get('/storico', function(req, res, next) {
       next(error);
       return;
     };
-    res.render('storico', {results, title: 'Storico' });
-});
+    const dishes = results;
+    db.getSottogruppi((error, results, fields) =>{
+      res.render('storico', {sottogruppi: results, dishes, title: 'Storico' });
+    });
+    
+  });
 });
 
 module.exports = router;

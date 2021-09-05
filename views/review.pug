@@ -1,0 +1,52 @@
+extends layout 
+
+block navbar-items-right 
+    li.nav-item.me-2 
+        +menu-button
+
+block layout-content 
+  div.container
+    - var row_items = 0
+    each dish in dishes
+        - if(row_items % 4 == 0){
+            - if(row_items != 0)
+                </div>
+            <div class="row mt-3">
+        - }
+        .col-md-3
+            .card.m-auto(style="width: 100%; max-width: 286px;")
+                img.card-img-top(src="/images/286x286/" + dish.foto  alt="immagine di " + dish.nome)
+                .card-body
+                    h5.card-title #{dish.nome}
+                    p.card-text #{dish.descrizione}
+                    fieldset.rating
+                        - const voto = dish.voto
+                        - for(var i = 5; i > 0; i--){
+                            - if(i == voto){
+                                input.star(id='star' + i + '_' + dish.id type='radio' name="rating-" + dish.ordine value=i data-id-ordine=dish.ordine checked)
+                                label.bi-star-fill(for='star' + i + '_' + dish.id title= i +' stars')                            
+                            - } else {
+                                input.star(id='star' + i + '_' + dish.id type='radio' name="rating-" + dish.ordine value=i data-id-ordine=dish.ordine)
+                                label.bi-star-fill(for='star' + i + '_' + dish.id title= i +' stars')
+                            - }
+
+                            - var x = i - 0.5;
+                            - if(x == voto){
+                                input.star(id='star' + x + '_' + dish.id type='radio' name="rating-" + dish.ordine value=x data-id-ordine=dish.ordine checked)
+                                label.bi-star-half(for='star' + x + '_' + dish.id title= x +' stars')                            
+                            - } else {                            
+                                input.star(id='star' + x + '_' + dish.id type='radio' name="rating-" + dish.ordine value=x data-id-ordine=dish.ordine)
+                                label.bi-star-half(for='star' + x + '_' + dish.id title= x +' stars')
+                            - }
+                        - }
+
+                        
+        - row_items++
+    </div>
+block scripts 
+    script. 
+        $('input.star').change( function () {
+            var review = this.value;
+            var idOrdine = $(this).attr('data-id-ordine');
+            addReview(idOrdine, review);
+        });

@@ -2,10 +2,9 @@ var express = require('express');
 var DB = require('../db');
 var router = express.Router();
 
-/* GET home page. */
 router.get('/menu', function(req, res, next) {
   var db = new DB();
-  db.getDishes((error, results, fields) => {
+  db.getAllDishes((error, results, fields) => {
     if(error) {
       next(error);
       return;
@@ -35,25 +34,9 @@ router.get('/menu', function(req, res, next) {
       //req.session.cart.forEach((value) => {orders += value;});
     }
 
-    var o ={sottogruppi: Array.from(dishes.keys()), results: dishes, title:"Menù", orders, profile: req.user!=undefined};
+    var o ={sottogruppi: Array.from(dishes.keys()), results: dishes, title:"Menù", orders, loggedIn: req.user!=undefined};
     res.render('menu', o);
 
-  });
-
-  router.post('/menu/addDish', function(req, res, next) {
-    const id = req.body.idPiatto;
-
-    if(!req.session.cart)
-      req.session.cart = {};
-      //req.session.cart = new Map();
-    
-    
-    if(req.session.cart[id])
-      req.session.cart[id]++;
-    else
-      req.session.cart[id] = 1;
-
-    res.status(200).send();
   });
 });
 

@@ -1,0 +1,37 @@
+mixin cart-button(orders) 
+    a.cart.btn.btn-danger.mb-2(href="/cart" role='button') 
+        span.d-none.d-lg-inline.me-1 Carrello
+        svg.bi(width="32" height="32" fill="currentColor")
+            use(xlink:href="bootstrap-icons.svg#cart-fill")
+            div(style="position: relative;")
+                span#cart-counter(style="position: absolute; color: black; top: -30px; left: 72px;") #{orders}
+
+mixin orders-button
+    a.storico.btn.btn-danger.mb-2(href="/storico")
+        span.d-none.d-lg-inline.me-1 Storico
+        svg.bi(width="32" height="32" fill="currentColor")
+            use(xlink:href="bootstrap-icons.svg#journal-bookmark-fill")
+
+mixin logout-button
+    a.logout.btn.btn-danger.mb-2(href="/logout") 
+        span.d-none.d-lg-inline.me-1 Log Out
+        svg.bi(width="32" height="32" fill="currentColor")
+            use(xlink:href="bootstrap-icons.svg#box-arrow-right")
+
+mixin login-button(currentPage)
+    a.signin.btn.btn-danger.mb-2(href="/signin" + currentPage) 
+        span.d-none.d-lg-inline.me-1 Accedi
+        svg.bi(width="32" height="32" fill="currentColor")
+            use(xlink:href="bootstrap-icons.svg#box-arrow-in-right")
+
+mixin menu-button
+    a.btn.btn-danger.mb-2(href="/menu" role='button') 
+        span.d-none.d-lg-inline.me-1 Menu
+        svg.bi(width="32" height="32" fill="currentColor")
+            use(xlink:href="bootstrap-icons.svg#journal-text")
+
+mixin review-button
+    a.btn.btn-danger.mb-2(href="/review" role='button') 
+        span.d-none.d-lg-inline.me-1 Voti
+        svg.bi(width="32" height="32" fill="currentColor")
+            use(xlink:href="bootstrap-icons.svg#star")

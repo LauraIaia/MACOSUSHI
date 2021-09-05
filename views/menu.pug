@@ -1,23 +1,33 @@
 extends layout
 
+block navbar-items-left
+  li.nav-item.dropdown
+    a#navbarDropdown.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false') Categorie
+    ul.dropdown-menu(aria-labelledby='navbarDropdown')
+      each st in sottogruppi
+        li
+          a.dropdown-item(href='#' + st) #{st}
+
+block navbar-items-right
+  li.nav-item.me-2
+    +cart-button(orders)
+
 block layout-content
-  a.cart.btn.btn-danger(href="/cart" role='button') Carrello
-    span.badge.bg-light(style="margin-left: 5px; color: black;") #{orders}
   div.container
   each st in sottogruppi
-    h1.white #{st}
+    h1.white.text-center(id=st) #{st}
     - var row_items = 0
     each dish in results.get(st)
       - if(row_items % 4 == 0){
         - if(row_items != 0)
           </div>
-        <div class="row">
+        <div class="row mt-3">
       - }
 
-          .col
-            div.card(style="width: 18rem;")
+          .col-md-3
+            .card.m-auto(style="width: 100%; max-width: 286px;")
               img.card-img-top(src="/images/286x286/" + dish.foto  alt="Card image cap")
-              div.card-body
+              .card-body
                 h5.card-title #{dish.nome}
                 p.card-text #{dish.descrizione}
                 a.btn.btn-primary(onclick= "addDish(" + dish.id + ", addedToCart())") Aggiungi al carrello

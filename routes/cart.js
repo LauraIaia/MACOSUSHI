@@ -5,41 +5,48 @@ var router = express.Router();
 /* GET home page. */
 router.get('/cart', function(req, res, next) {
   var orders = [];
-  //req.session.cart.forEach((key, value) =>{
+  
+  if(!req.session.cart){
+    res.render("errors/empty_cart");
+    return;
+  }
+
   const cart = Object.entries(req.session.cart);
   var i = 0;
   const db = new DB();
   for (const [key, value] of cart) {  
-      db.getDish(key, (error, results, fields) => {
-        if(error) {
-          next(error);
-          return;
-        }
+    db.getDish(key, (error, results, fields) => {
+      if(error) {
+        next(error);
+        return;
+      }
 
-        orders.push({
-          id: results[0].id,
-          nome: results[0].NOME,
-          qty: value 
-        });
-      
-        if (i == cart.length - 1)
-          res.render('cart', { title: 'Cart', orders});
-        else
-          i++;
+      orders.push({
+        id: results[0].id,
+        nome: results[0].nome,
+        qty: value 
       });
+    
+      if (i == cart.length - 1)
+        res.render('cart', { title: 'Cart', orders});
+      else
+        i++;
+    });
   }
 });
 
 router.post('/cart/submit', function(req, res, next) {
-  if(req.session.cart){
-    //errore
+  if(!req.session.cart){
+    res.render("errors/empty_cart");
+    return;
   }
 
   const db = new DB();
   
   const tavolo = parseInt(req.body.tavolo)
   if(!tavolo){
-    // errore
+    res.json({result: "failed", message: "Nessun tavolo selezionato"});
+    return;
   }
 
   var idUtente = null;
@@ -57,7 +64,26 @@ router.post('/cart/submit', function(req, res, next) {
       next(error);
       return;
     }
-    res.status(200).send();
+    
+    if(!req.session.orders)
+      req.session.orders = [];
+
+    // salvo l'id dell'ordine per poterlo valutare successivamente
+    for(var i = 0; i < results.length; i++){
+      req.session.orders.push(results[i].insertId);
+    }
+
+    /*
+    const cart = Object.entries(req.session.cart);
+    for(const[idPiatto, qty] of cart){
+      if(!req.session.orders[idPiatto])
+        req.session.orders[idPiatto] = qty;
+      else
+        req.session.orders[idPiatto] += qty;
+    }
+    */
+    delete req.session.cart;
+    res.json({result: "ok"});
   });    
 });
 
